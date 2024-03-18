@@ -3,16 +3,12 @@
 # --------------------------------------------------------------------------------------------
 # imports
 
-import time
-import json
-import io
 import os
-import base64
-from libembed import configurar, iniciar, processar, finalizar, obter_valor
-from PIL import Image, ImageTk
+import json
 import warnings
-from dotenv import load_dotenv
 from threading import Thread
+from dotenv import load_dotenv
+from libembed import configurar, iniciar, processar, finalizar, obter_valor
 from tkinter import (
     Button,
     Tk,
@@ -52,13 +48,13 @@ COLOR_FG_BUTTON_DISABLED = "#666666"
 # =========================================
 
 
-class PixApp:
+class XmlApp:
     # =========================================
     # | ===========  BEGIN LAYOUT =========== |
     # =========================================
     def __init__(self, root):
         self.root = root
-        self.root.title("Exemplo Pix")
+        self.root.title("Exemplo Xml")
         self.root.resizable(width=False, height=False)
         self.root.minsize(700, 400)
         self.root.grid_rowconfigure(0, weight=1)
@@ -135,6 +131,16 @@ class PixApp:
         )
         lbl_path.grid(column=0, row=2, sticky=W, pady=(0, 0))
 
+        lbl_zip = Label(
+            self.value_frame,
+            text="Caminho do ZIP",
+            relief=FLAT,
+            bg=COLOR_BG_LABEL,
+            fg=COLOR_FG_LABEL,
+            font=LARGE_FONT_STYLE,
+        )
+        lbl_zip.grid(column=0, row=3, sticky=W, pady=(0, 0))
+
         lbl_operator_title = Label(
             self.operator_frame,
             text="Operador",
@@ -184,7 +190,7 @@ class PixApp:
             width=17,
             command=self.configurar,
         )
-        btns["configs"].grid(column=0, row=3, columnspan=2, padx=5, pady=5, sticky=NSEW)
+        btns["configs"].grid(column=0, row=4, columnspan=2, padx=5, pady=5, sticky=NSEW)
 
         btns["btn_enviar"] = Button(
             self.value_frame,
@@ -198,7 +204,7 @@ class PixApp:
             width=17,
             command=self.pagamento_enviar,
         )
-        btns["btn_enviar"].grid(column=0, row=4, columnspan=2, padx=5, pady=5, sticky=NSEW)
+        btns["btn_enviar"].grid(column=0, row=5, columnspan=2, padx=5, pady=5, sticky=NSEW)
         
         btns["canc"] = Button(
             self.operator_frame,
@@ -241,7 +247,19 @@ class PixApp:
         entry_path.grid(column=1, row=2, sticky=NS, padx=10, pady=10)
         entry_path.insert(END, "")
 
-        return [entry_content, entry_path]
+        self.xml_zip = StringVar()
+        entry_zip = Text(
+            self.value_frame,
+            relief=SUNKEN,
+            bg=COLOR_BG_ENTRY,
+            fg=COLOR_FG_LABEL,
+            width=60,
+            height=2
+        )
+        entry_zip.grid(column=1, row=3, sticky=NS, padx=10, pady=10)
+        entry_zip.insert(END, "")
+
+        return [entry_content, entry_path, entry_zip]
 
     def create_logs_text(self):
         self.logs = StringVar()
@@ -274,7 +292,7 @@ class PixApp:
     # =======================================
 
     # =======================================
-    # | ==============  PIX  ============== |
+    # | ==============  Xml  ============== |
     # =======================================
     def error(self, text):
         self.lbl_operator_text.set("Aconteceu algum erro na operacao: " + text)
@@ -286,7 +304,7 @@ class PixApp:
 
     def pagamento_enviar(self):
         self.buttons["configs"]["state"] = "disabled"
-        self.buttons["btn_enviar"]["state"] = "disabled"
+        self.buttons["btn_enviar"]["state"] = "active"
         self.buttons["canc"]["state"] = "active"
         self.running = True
         self.process_thread = Thread(target=self.enviar)
@@ -296,7 +314,7 @@ class PixApp:
         self.running = False
         self.buttons["configs"]["state"] = "active"
         self.buttons["btn_enviar"]["state"] = "active"
-        self.buttons["canc"]["state"] = "disabled"
+        self.buttons["canc"]["state"] = "active"
         self.lbl_operator_text.set("Cancelled")
 
     def enviar(self):
@@ -313,7 +331,7 @@ class PixApp:
         self.root.update()
 
     def e_configurar(self):
-        self.lbl_operator_text.set("configurando produto pos")
+        self.lbl_operator_text.set("configurando produto xml")
         
         load_dotenv()
 
@@ -345,7 +363,7 @@ class PixApp:
         return result
 
     def e_iniciar(self):
-        self.lbl_operator_text.set("iniciando pos")
+        self.lbl_operator_text.set("iniciando xml")
 
         OPERACAO = "xml" # produto que será executado (atual pos)
 
@@ -364,13 +382,16 @@ class PixApp:
         return res
 
     def e_enviar(self):
-        self.lbl_operator_text.set("pedindo transacao para 1 real")
+        self.lbl_operator_text.set("enviando XML ao server")
 
         OPERACAO    = 'enviar_xml'                      # obtem o qrcode
         CONTENT     = self.xml_texts[0].get("1.0", END).rstrip('\n') # valor sempre em centavos
         PATH        = self.xml_texts[1].get("1.0", END).rstrip('\n') # path do xml
+        ZIP         = self.xml_texts[2].get("1.0", END).rstrip('\n') # path do xml
         print("contnet: " + self.xml_texts[0].get("1.0", END).rstrip('\n') + 
-              " path: " + self.xml_texts[1].get("1.0", END).rstrip('\n'))
+              " path: " + self.xml_texts[1].get("1.0", END).rstrip('\n') + 
+              " zip: " + self.xml_texts[2].get("1.0", END).rstrip('\n')) 
+
 
         # JSON 
         if CONTENT and CONTENT != "\n":
@@ -387,6 +408,13 @@ class PixApp:
                     "path": PATH,
                 }
             }
+        elif ZIP and ZIP != "\n":
+            input_data = {
+                "processar": {
+                    "operacao": OPERACAO,   
+                    "zip": ZIP,
+                }
+            }
         else:
             print("Nenhum conteudo ou path informado")
             return "Nenhum conteudo ou path informado"
@@ -395,27 +423,28 @@ class PixApp:
 
         self.xml_texts[0].delete("1.0", END)
         self.xml_texts[1].delete("1.0", END)
+        self.xml_texts[2].delete("1.0", END)
         self.write_logs("PROCESSAR")
         self.write_logs(res)
         
-        status_code = obter_valor(res, "resultado.status_code")
         message = obter_valor(res, "mensagem")
-
+        status_code = obter_valor(res, "resultado.status_code")
         if status_code == "0":
             self.lbl_operator_text.set("Enviado com Sucesso")
             self.root.update()
         else:
             print("error in response ")
-            self.lbl_operator_text.set("Ocorreu algum erro ao obter o qrcode")
+            self.lbl_operator_text.set("Ocorreu algum erro ao enviar XML")
+        
         return message
 
     # =======================================
-    # | ============  END PIX  ============ |
+    # | ============  END Xml  ============ |
     # =======================================
 
     def run(self):
         self.root.mainloop()
 
 if __name__ == "__main__":
-    app = PixApp(Tk())
+    app = XmlApp(Tk())
     app.run()
