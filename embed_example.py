@@ -292,7 +292,7 @@ class XmlApp:
     # =======================================
 
     # =======================================
-    # | ==============  Xml  ============== |
+    # | ==============  XML  ============== |
     # =======================================
     def error(self, text):
         self.lbl_operator_text.set("Aconteceu algum erro na operacao: " + text)
@@ -315,7 +315,7 @@ class XmlApp:
         self.buttons["configs"]["state"] = "active"
         self.buttons["btn_enviar"]["state"] = "active"
         self.buttons["canc"]["state"] = "active"
-        self.lbl_operator_text.set("Cancelled")
+        self.lbl_operator_text.set("Cancelado")
 
     def enviar(self):
         if "Sucesso" not in self.e_iniciar():
@@ -439,7 +439,7 @@ class XmlApp:
         return message
 
     # =======================================
-    # | ============  END Xml  ============ |
+    # | ============  END XML  ============ |
     # =======================================
 
     def run(self):
