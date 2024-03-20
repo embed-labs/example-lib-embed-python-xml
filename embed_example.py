@@ -5,6 +5,7 @@
 
 import os
 import json
+import shutil
 import warnings
 from threading import Thread
 from dotenv import load_dotenv
@@ -67,7 +68,7 @@ class XmlApp:
         self.buttons = self.create_buttons()
         self.logs_text = self.create_logs_text()
         self.xml_texts = self.create_xmls_text()
-        self.buttons["canc"]["state"] = "disabled"
+        self.buttons["btn_cancel"]["state"] = "disabled"
 
     def create_main_frame(self):
         frame = Frame(self.root, bg=COLOR_BG_FRAME, borderwidth=2, border=10)
@@ -119,7 +120,7 @@ class XmlApp:
             fg=COLOR_FG_LABEL,
             font=LARGE_FONT_STYLE,
         )
-        lbl_content.grid(column=0, row=1, sticky=W, pady=(35, 0))
+        lbl_content.grid(column=0, row=2, sticky=W, pady=(5, 5))
 
         lbl_path = Label(
             self.value_frame,
@@ -129,7 +130,7 @@ class XmlApp:
             fg=COLOR_FG_LABEL,
             font=LARGE_FONT_STYLE,
         )
-        lbl_path.grid(column=0, row=2, sticky=W, pady=(0, 0))
+        lbl_path.grid(column=0, row=3, sticky=W, pady=(5, 5))
 
         lbl_zip = Label(
             self.value_frame,
@@ -139,7 +140,17 @@ class XmlApp:
             fg=COLOR_FG_LABEL,
             font=LARGE_FONT_STYLE,
         )
-        lbl_zip.grid(column=0, row=3, sticky=W, pady=(0, 0))
+        lbl_zip.grid(column=0, row=4, sticky=W, pady=(5, 5))
+
+        lbl_loop = Label(
+            self.value_frame,
+            text="Caminho Envio em Loop",
+            relief=FLAT,
+            bg=COLOR_BG_LABEL,
+            fg=COLOR_FG_LABEL,
+            font=LARGE_FONT_STYLE,
+        )
+        lbl_loop.grid(column=0, row=5, sticky=W, pady=(5, 5))
 
         lbl_operator_title = Label(
             self.operator_frame,
@@ -178,7 +189,7 @@ class XmlApp:
     def create_buttons(self):
         btns = {}
 
-        btns["configs"] = Button(
+        btns["btn_config"] = Button(
             self.value_frame,
             text="Configurar",
             relief=RAISED,
@@ -190,7 +201,7 @@ class XmlApp:
             width=17,
             command=self.configurar,
         )
-        btns["configs"].grid(column=0, row=4, columnspan=2, padx=5, pady=5, sticky=NSEW)
+        btns["btn_config"].grid(column=0, row=1, columnspan=2, padx=5, pady=5, sticky=NSEW)
 
         btns["btn_enviar"] = Button(
             self.value_frame,
@@ -204,9 +215,9 @@ class XmlApp:
             width=17,
             command=self.pagamento_enviar,
         )
-        btns["btn_enviar"].grid(column=0, row=5, columnspan=2, padx=5, pady=5, sticky=NSEW)
+        btns["btn_enviar"].grid(column=0, row=6, columnspan=2, padx=5, pady=5, sticky=NSEW)
         
-        btns["canc"] = Button(
+        btns["btn_cancel"] = Button(
             self.operator_frame,
             text="Cancelar",
             relief=RAISED,
@@ -218,7 +229,7 @@ class XmlApp:
             width=17,
             command=self.cancelamento,
         )
-        btns["canc"].grid(column=1, row=4, columnspan=2, padx=5, pady=5, sticky=NSEW)
+        btns["btn_cancel"].grid(column=1, row=4, columnspan=2, padx=5, pady=5, sticky=NSEW)
         
         return btns
 
@@ -230,9 +241,9 @@ class XmlApp:
             bg=COLOR_BG_ENTRY,
             fg=COLOR_FG_LABEL,
             width=60,
-            height=1,
+            height=2,
         )
-        entry_content.grid(column=1, row=1, sticky=NS, padx=10, pady=10)
+        entry_content.grid(column=1, row=2, sticky=NS, padx=10, pady=10)
         entry_content.insert(END, "")
 
         self.xml_path = StringVar()
@@ -244,7 +255,7 @@ class XmlApp:
             width=60,
             height=2
         )
-        entry_path.grid(column=1, row=2, sticky=NS, padx=10, pady=10)
+        entry_path.grid(column=1, row=3, sticky=NS, padx=10, pady=10)
         entry_path.insert(END, "")
 
         self.xml_zip = StringVar()
@@ -256,10 +267,22 @@ class XmlApp:
             width=60,
             height=2
         )
-        entry_zip.grid(column=1, row=3, sticky=NS, padx=10, pady=10)
+        entry_zip.grid(column=1, row=4, sticky=NS, padx=10, pady=10)
         entry_zip.insert(END, "")
 
-        return [entry_content, entry_path, entry_zip]
+        self.xml_loop = StringVar()
+        entry_loop = Text(
+            self.value_frame,
+            relief=SUNKEN,
+            bg=COLOR_BG_ENTRY,
+            fg=COLOR_FG_LABEL,
+            width=60,
+            height=2
+        )
+        entry_loop.grid(column=1, row=5, sticky=NS, padx=10, pady=10)
+        entry_loop.insert(END, "")
+
+        return [entry_content, entry_path, entry_zip, entry_loop]
 
     def create_logs_text(self):
         self.logs = StringVar()
@@ -303,18 +326,18 @@ class XmlApp:
         self.root.update()
 
     def pagamento_enviar(self):
-        self.buttons["configs"]["state"] = "disabled"
+        self.buttons["btn_config"]["state"] = "disabled"
         self.buttons["btn_enviar"]["state"] = "active"
-        self.buttons["canc"]["state"] = "active"
+        self.buttons["btn_cancel"]["state"] = "active"
         self.running = True
         self.process_thread = Thread(target=self.enviar)
         self.process_thread.start()
 
     def cancelamento(self):
         self.running = False
-        self.buttons["configs"]["state"] = "active"
+        self.buttons["btn_config"]["state"] = "active"
         self.buttons["btn_enviar"]["state"] = "active"
-        self.buttons["canc"]["state"] = "active"
+        self.buttons["btn_cancel"]["state"] = "active"
         self.lbl_operator_text.set("Cancelado")
 
     def enviar(self):
@@ -326,7 +349,7 @@ class XmlApp:
             return self.error("Erro ao finalizar")
 
         self.buttons["btn_enviar"]["state"] = "active"
-        self.buttons["configs"]["state"] = "active"
+        self.buttons["btn_config"]["state"] = "active"
         self.lbl_operator_text.set("Enviar")
         self.root.update()
 
@@ -363,7 +386,7 @@ class XmlApp:
         return result
 
     def e_iniciar(self):
-        self.lbl_operator_text.set("iniciando xml")
+        self.lbl_operator_text.set("iniciando XML")
 
         OPERACAO = "xml" # produto que será executado (atual pos)
 
@@ -384,10 +407,11 @@ class XmlApp:
     def e_enviar(self):
         self.lbl_operator_text.set("enviando XML ao server")
 
-        OPERACAO    = 'enviar_xml'                      # obtem o qrcode
-        CONTENT     = self.xml_texts[0].get("1.0", END).rstrip('\n') # valor sempre em centavos
-        PATH        = self.xml_texts[1].get("1.0", END).rstrip('\n') # path do xml
-        ZIP         = self.xml_texts[2].get("1.0", END).rstrip('\n') # path do xml
+        OPERACAO    = 'enviar_xml'                      
+        CONTENT     = self.xml_texts[0].get("1.0", END).rstrip('\n') 
+        PATH        = self.xml_texts[1].get("1.0", END).rstrip('\n')
+        ZIP         = self.xml_texts[2].get("1.0", END).rstrip('\n') 
+        LOOP        = self.xml_texts[3].get("1.0", END).rstrip('\n') 
         print("contnet: " + self.xml_texts[0].get("1.0", END).rstrip('\n') + 
               " path: " + self.xml_texts[1].get("1.0", END).rstrip('\n') + 
               " zip: " + self.xml_texts[2].get("1.0", END).rstrip('\n')) 
@@ -415,6 +439,8 @@ class XmlApp:
                     "zip": ZIP,
                 }
             }
+        elif LOOP and LOOP != "\n":
+            return self.e_enviar_loop()
         else:
             print("Nenhum conteudo ou path informado")
             return "Nenhum conteudo ou path informado"
@@ -437,9 +463,46 @@ class XmlApp:
             self.lbl_operator_text.set("Ocorreu algum erro ao enviar XML")
         
         return message
+    
+    
+    def e_enviar_loop(self): 
+        diretorio   = self.xml_texts[3].get("1.0", END).rstrip('\n')
+         # Itera sobre os arquivos no diretório
+        for filename in os.listdir(diretorio):
+            self.lbl_operator_text.set("enviando arquivo " + filename)
+            filepath = os.path.join(diretorio, filename)
+            # Verifica se é um arquivo XML
+            if os.path.isfile(filepath) and filename.lower().endswith('.xml'):
+                OPERACAO    = 'enviar_xml'    
+                PATH        = filepath
+                
+                input_data = {
+                        "processar": {
+                        "operacao": OPERACAO,   
+                        "path": PATH,
+                    }
+                }
+
+                input_json = json.dumps(input_data)
+                res = processar(input_json)
+
+                self.write_logs("PROCESSAR")
+                self.write_logs(res)
+                
+                message = obter_valor(res, "mensagem")
+                status_code = obter_valor(res, "resultado.status_code")
+                if status_code == "0":
+                    self.lbl_operator_text.set("Enviado com Sucesso")
+                    self.root.update()
+                else:
+                    self.lbl_operator_text.set("erro com arquivo " + filename)
+                    shutil.move(filepath, "xmls/errors")
+
+        self.xml_texts[3].delete("1.0", END)
+        return message
 
     # =======================================
-    # | ============  END XML  ============ |
+    # | ============  END Xml  ============ |
     # =======================================
 
     def run(self):
