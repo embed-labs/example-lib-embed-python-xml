@@ -55,7 +55,7 @@ class XmlApp:
     # =========================================
     def __init__(self, root):
         self.root = root
-        self.root.title("Exemplo Xml")
+        self.root.title("Demo XML")
         self.root.resizable(width=False, height=False)
         self.root.minsize(700, 400)
         self.root.grid_rowconfigure(0, weight=1)
@@ -104,7 +104,7 @@ class XmlApp:
         self.lbl_value_text.set("")
         lbl_value = Label(
             self.value_frame,
-            text="Xml teste",
+            text="XML",
             relief=FLAT,
             bg=COLOR_BG_LABEL,
             fg=COLOR_FG_LABEL,
