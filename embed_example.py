@@ -124,7 +124,7 @@ class XmlApp:
 
         lbl_path = Label(
             self.value_frame,
-            text="Caminho do XML",
+            text="Caminho Completo do XML",
             relief=FLAT,
             bg=COLOR_BG_LABEL,
             fg=COLOR_FG_LABEL,
@@ -134,7 +134,7 @@ class XmlApp:
 
         lbl_zip = Label(
             self.value_frame,
-            text="Caminho do ZIP",
+            text="Caminho Completo do ZIP (1 MB)",
             relief=FLAT,
             bg=COLOR_BG_LABEL,
             fg=COLOR_FG_LABEL,
@@ -144,7 +144,7 @@ class XmlApp:
 
         lbl_loop = Label(
             self.value_frame,
-            text="Caminho Envio em Loop",
+            text="Diretorio para Envio (Loop)",
             relief=FLAT,
             bg=COLOR_BG_LABEL,
             fg=COLOR_FG_LABEL,
