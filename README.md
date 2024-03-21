@@ -19,3 +19,12 @@ cd example-lib-embed-python-xml
 mv .env.example .env
 python3 embed_example.py
 ```
+### Fluxo da API
+```mermaid
+graph TD;
+    A(1 - embed_configurar) -->B(2 -embed_iniciar);    
+    B --> C(3 - embed_processar);
+    C --> D{4 - embed_processar};
+    D --> |processando|D;
+    D --> E(5 - embed_finalizar);
+```
