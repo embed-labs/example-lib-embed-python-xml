@@ -253,7 +253,7 @@ Será um String com valor informado em _key_ se conter em _json_
 "value25"
 ```
 
-#### 5. Retornos
+### Retornos
 
 Os possíveis retornos para estes métodos são:
 
