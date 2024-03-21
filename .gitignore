@@ -1,5 +1,6 @@
 __pycache__
 *.dat
 logs
+xmls
 .env
 qrcode.png
