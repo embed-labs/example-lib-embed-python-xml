@@ -72,8 +72,8 @@ Pode ser parametrizado de duas maneiras:
         "sub_produto": "1",                                       
         "infos": {
             "token": "",    // gerado pelo time integração
-            "email": "",    // gerado pelo time integração
-            "pdv": ""       // gerado pelo time integração
+            "email": "",    // informado pelo parceiro
+            "pdv": ""       // informado pelo parceiro
         }
     }
 }
