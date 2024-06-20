@@ -49,10 +49,10 @@ def rar(path_rar):
     result = lib.obter_valor(output, STATUS_CODE)
     return result
 
-def path(path):
+def path(path_file):
     OPERACAO = 'enviar_xml' # operação para realizar envio de xml
     TIPO_ENVIO = "path"     # tipo do envio de xml
-    VALOR = path            # conteudo/path para envio
+    VALOR = path_file       # conteudo/path para envio
 
     input = f"{OPERACAO};{TIPO_ENVIO};{VALOR}"
     output = lib.processar(input)
@@ -64,7 +64,7 @@ def path(path):
 def xml(content):
     OPERACAO = 'enviar_xml' # operação para realizar envio de xml
     TIPO_ENVIO = "xml"      # tipo do envio de xml
-    VALOR = xml             # conteudo/path para envio
+    VALOR = content         # conteudo/path para envio
 
     input = f"{OPERACAO};{TIPO_ENVIO};{VALOR}"
     output = lib.processar(input)

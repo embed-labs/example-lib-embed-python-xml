@@ -1,6 +1,7 @@
 __pycache__
-*.dat
 logs
-xmls
 .env
-qrcode.png
+*.dat
+*.zip
+*.rar
+*.xml
