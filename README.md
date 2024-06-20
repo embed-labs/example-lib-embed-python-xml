@@ -8,6 +8,12 @@ Exemplo demonstrativo para o uso da `lib-embed` no envio de XML ao nosso server 
 
 É necessário ter o Python 3 instalado em sua máquina.
 
+#### Dependências 
+- python3-tk
+- python3-pip
+- Pillow (via pip)
+- python-dotenv (via pip)
+
 ### Clonar
 
 ```git
@@ -16,7 +22,7 @@ git clone git@github.com:org-dev-embed/example-lib-embed-python-xml.git
 
 ### Configurações 
 
-Acessar o diretório, modificar o arquivo .env.example, renomeando para .env e colocando os valores passados pelo time de integração
+Acessar o diretório, modificar o arquivo .env.example, renomeando para .env e adicionando os valores passados pelo time de integração
 
 ```
 cd example-lib-embed-python-xml
@@ -71,16 +77,16 @@ Pode ser parametrizado de duas maneiras:
         "produto": "xml",                                        
         "sub_produto": "1",                                       
         "infos": {
-            "token": "",    // gerado pelo time integração
-            "email": "",    // informado pelo parceiro
-            "pdv": ""       // informado pelo parceiro
+            "access_key": "",   // gerado pelo time integração
+            "secret_key": "",   // gerado pelo time integração
+            "id_pdv": ""        // gerado pelo time integração
         }
     }
 }
 ```
 2. Metaparâmetro (obedecendo a sequência)
 ```c
-"xml;1;token;email;pdv"
+"xml;1;access_key;secret_key;id_pdv"
 ```
 
 ###### 1.2.2. Output
@@ -131,8 +137,12 @@ O retorno para este método consiste em um Json (sempre), no seguinte formato:
 
 ```json
 {
-  "codigo": 0,
-  "mensagem": "Sucesso"
+    "codigo": 0,
+    "mensagem": "Sucesso",
+    "resultado": {
+        "status_code": 0,
+        "status_message": "iniciado"
+    }
 }
 ```
 
@@ -157,54 +167,78 @@ Aqui estão as definições para _input_ e _output_ para este método.
 
 ###### 3.2.1. Input
 
-Temos três modalidades de envio de XML que podem ser realizadas:
-1. por conteúdo (string)
+Temos quatro modalidades de envio de XML que podem ser realizadas e uma para consultar status do envio:
+1. por conteúdo xml (string)
 2. por caminho absoluto (path)
-3. por caminho do arquivo compactado (zip)
+3. por caminho do arquivo compactado zip
+4. por caminho do arquivo compactado rar
+5. consultar status do arquivo ou conteudo enviado
 
 Estas modalidades podem ser parametrizadas de duas formas
 
 1. Json
 ```json
-// Conteúdo (String)
+// Conteúdo XML (String)
 {
     "processar": {
         "operacao": "enviar_xml",   
-        "conteudo": "",     // string do arquivo XML
+        "xml": "",  // string do arquivo xml
     }
 }
 // Caminho absoluto do arquivo (Path)
 {
     "processar": {
         "operacao": "enviar_xml",   
-        "path": "",         // caminho do arquivo xml
+        "path": "", // caminho do arquivo xml
     }
 }
 // Caminho do arquivo compactado (Zip)
 {
     "processar": {
         "operacao": "enviar_xml",   
-        "zip": "",          // caminho do arquivo zip
+        "zip": "",  // caminho do arquivo zip
+    }
+}
+// Caminho do arquivo compactado (Rar)
+{
+    "processar": {
+        "operacao": "enviar_xml",   
+        "rar": "",  // caminho do arquivo rar
+    }
+}
+// Consultar status do envio atual
+{
+    "processar": {
+        "operacao": "get_status",   
     }
 }
 ```
 2. Metaparâmetro (obedecendo a sequência)
 ```c
-// Conteúdo (String)
-"enviar_xml;conteudo;string_xml"
+// Conteúdo XML (String)
+"enviar_xml;xml;string_xml"
 // Caminho absoluto do arquivo (Path)
 "enviar_xml;path;path_arquivo_xml"
 // Caminho do arquivo compactado (Zip)
 "enviar_xml;zip;path_zip_xml"
+// Caminho do arquivo compactado (Rar)
+"enviar_xml;rar;path_rar_xml"
+// Consultar status do envio atual
+"get_status"
 ```
+
 ###### 3.2.2. Output
 
 O retorno para este método consiste em um Json (sempre), no seguinte formato:
 
 ```json
 {
-  "codigo": 0,
-  "mensagem": "Sucesso"
+    "codigo": 0,
+    "mensagem": "Sucesso",
+    "resultado": {
+        "status_code": 1,
+        "status_message": "processando"
+    }
 }
 ```
 
@@ -267,3 +301,9 @@ Os possíveis retornos para estes métodos são:
 | -42 | XmlMissingParameter |
 | -43 | XmlInvalidOperation |
 | -44 | XmlInputBadFormat |
+
+| status_code | status_message |
+| - | - |
+| -1 | erro |
+| 0 | iniciado & finalizado |
+| 1 | processando |
