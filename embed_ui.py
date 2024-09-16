@@ -119,7 +119,7 @@ class TelaPrincipal(tk.Frame):
         self.voltar_button.pack(side="left", padx=10)
 
     def browse_file(self):
-        filename = filedialog.askopenfilename()
+        filename = filedialog.askdirectory()
         if filename:
             self.textbox.delete(0, tk.END)
             self.textbox.insert(0, filename)

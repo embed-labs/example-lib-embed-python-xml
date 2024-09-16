@@ -1,8 +1,14 @@
 import os
+import glob
 import dotenv
 import embed_lib as lib
 
 STATUS_CODE = "resultado.status_code"
+
+def listar_arquivos(diretorio, extensao):
+    padrao = os.path.join(diretorio, f'**/*.{extensao}')
+    arquivos = glob.glob(padrao, recursive=True)
+    return arquivos
 
 def configurar():
     dotenv.load_dotenv()
