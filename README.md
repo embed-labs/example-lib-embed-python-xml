@@ -1,4 +1,4 @@
-# example-lib-embed-python-xml
+![embed](https://github.com/user-attachments/assets/17888b6f-4cd6-4972-8a7b-e610fb67ec35)
 
 Exemplo demonstrativo para o uso da `lib-embed` no envio de XML ao nosso server de armazenamento.
 
@@ -17,7 +17,7 @@ Exemplo demonstrativo para o uso da `lib-embed` no envio de XML ao nosso server 
 ### Clonar
 
 ```git
-git clone git@github.com:org-dev-embed/example-lib-embed-python-xml.git
+git clone git@github.com:embed-labs/example-lib-embed-python-xml.git
 ```
 
 ### Configurações 
@@ -41,14 +41,11 @@ python3 embed_example.py
 Vamos definir o fluxo que deve ser seguido para que sua implementação seja realizada 
 seguindo as melhores práticas no uso da nossa API
 
-```mermaid
-graph TD;
-    A(1 - embed_configurar) -->B(2 - embed_iniciar);    
-    B --> C(3 - embed_processar);
-    C --> D{4 - embed_processar};
-    D --> |processando|D;
-    D --> E(5 - embed_finalizar);
-```
+![geral](https://github.com/user-attachments/assets/b9b10d61-34a8-4fa0-bb64-8c26ee08bc74)
+![xml-string](https://github.com/user-attachments/assets/946c9922-3e2f-477b-9447-779ab76c3c32)
+![xml-path](https://github.com/user-attachments/assets/9c400fbb-bb41-4afb-b0db-341f3df9270f)
+![xml-zip](https://github.com/user-attachments/assets/cec42bb3-09cf-403a-9b1e-10ea4e33fb57)
+![xml-rar](https://github.com/user-attachments/assets/060a6068-bcd9-40a3-bd48-7c7bdd7f2586)
 
 ### Métodos
 
