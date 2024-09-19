@@ -1,6 +1,6 @@
 ![embed](https://github.com/user-attachments/assets/17888b6f-4cd6-4972-8a7b-e610fb67ec35)
 
-Exemplo demonstrativo para o uso da `lib-embed` no envio de XML ao nosso server de armazenamento.
+Exemplo demonstrativo para o uso da `lib-embed` no envio de XML ao nosso server de armazenamento repleto de recursos de IA e ML.
 
 ## Instalação
 
