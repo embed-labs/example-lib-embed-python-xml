@@ -41,11 +41,11 @@ python3 embed_example.py
 Vamos definir o fluxo que deve ser seguido para que sua implementação seja realizada 
 seguindo as melhores práticas no uso da nossa API
 
-![geral](https://github.com/user-attachments/assets/b9b10d61-34a8-4fa0-bb64-8c26ee08bc74)
-![xml-string](https://github.com/user-attachments/assets/946c9922-3e2f-477b-9447-779ab76c3c32)
-![xml-path](https://github.com/user-attachments/assets/9c400fbb-bb41-4afb-b0db-341f3df9270f)
-![xml-zip](https://github.com/user-attachments/assets/cec42bb3-09cf-403a-9b1e-10ea4e33fb57)
-![xml-rar](https://github.com/user-attachments/assets/060a6068-bcd9-40a3-bd48-7c7bdd7f2586)
+![fluxo-geral](https://github.com/user-attachments/assets/78c65a19-2c6f-4e26-94e7-56b57e1a9dfa)
+![xml_string](https://github.com/user-attachments/assets/6d8c3add-6677-438b-b4ec-77dd654cdfd6)
+![xml-path](https://github.com/user-attachments/assets/24db953d-8cd1-44cb-a625-122dfd5590d4)
+![xml-zip](https://github.com/user-attachments/assets/0dc989eb-2d2d-47e0-8b19-008b088e7cfa)
+![xml-rar](https://github.com/user-attachments/assets/41692a48-304b-4907-9e9f-bd666aa25921)
 
 ### Métodos
 
